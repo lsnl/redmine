@@ -25,6 +25,10 @@ export REDMINE_API_ACCESS_KEY="XXX"
 
 ## Usage
 
-```zsh
+### projects
 
+fetch projects
+
+```zsh
+./redmine.py projects
 ```

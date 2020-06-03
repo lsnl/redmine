@@ -32,7 +32,10 @@ def main():
     redmine = Redmine(SERVER_URL, key=API_ACCESS_KEY)
 
     if commands[0] == 'projects':
-        projects = fetch_projects(redmine, commands[1])
+        query = None
+        if len(commands) > 2:
+            query = commands[1]
+        projects = fetch_projects(redmine, query)
         print('\n'.join(map(str, projects)))
 
 
