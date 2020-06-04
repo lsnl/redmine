@@ -10,6 +10,13 @@ SERVER_URL = 'http://rm.lsnl.jp/'
 API_ACCESS_KEY = os.getenv('REDMINE_API_ACCESS_KEY')
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('commands', nargs='+')
+    args = parser.parse_args()
+    return args
+
+
 def fetch_projects(redmine, query):
     if query == 'list':
         return redmine.project.all()
@@ -18,10 +25,8 @@ def fetch_projects(redmine, query):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('commands', nargs='+')
-    args = parser.parse_args()
-    commands = vars(args)['commands']
+    args = parse_args()
+    commands = args.commands
 
     if len(commands) < 1:
         parser.print_help()
