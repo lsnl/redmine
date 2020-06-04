@@ -16,6 +16,19 @@ def fetch_projects(redmine, query=None):
     return redmine.project.all()
 
 
+def fetch_issues(redmine, resource_id=None):
+    if not resource_id is None:
+        return redmine.issue.get(resource_id)
+
+    return redmine.issue.all()
+
+
+def print_issue(issue):
+    keys = ['id', 'subject', 'description']
+    for k in keys:
+        print("{:<16}{}".format(k, issue[k]))
+
+
 def main():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('commands', nargs='+')
@@ -37,6 +50,14 @@ def main():
             query = commands[1]
         projects = fetch_projects(redmine, query)
         print('\n'.join(map(str, projects)))
+
+    elif commands[0] == 'issues':
+        if len(commands) >= 2:
+            issue = fetch_issues(redmine, commands[1])
+            print_issue(issue)
+        else:
+            issues = fetch_issues(redmine)
+            print('\n'.join(map(str, issues)))
 
 
 if __name__ == '__main__':
