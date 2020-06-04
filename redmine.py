@@ -10,8 +10,9 @@ SERVER_URL = 'http://rm.lsnl.jp/'
 API_ACCESS_KEY = os.getenv('REDMINE_API_ACCESS_KEY')
 
 
-def fetch_projects(redmine, query=None):
-    # TODO: separate processing by query
+def fetch_projects(redmine, query):
+    if query == 'list':
+        return redmine.project.all()
 
     return redmine.project.all()
 
@@ -32,10 +33,9 @@ def main():
     redmine = Redmine(SERVER_URL, key=API_ACCESS_KEY)
 
     if commands[0] == 'projects':
-        query = None
-        if len(commands) > 2:
-            query = commands[1]
-        projects = fetch_projects(redmine, query)
+        if len(commands) < 2:
+            sys.exit(1)
+        projects = fetch_projects(redmine, commands[1])
         print('\n'.join(map(str, projects)))
 
 
