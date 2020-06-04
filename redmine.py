@@ -3,6 +3,7 @@
 import os
 import sys
 import argparse
+import unicodedata
 
 from redminelib import Redmine
 
@@ -21,17 +22,49 @@ def fetch_projects(redmine):
     return redmine.project.all()
 
 
-def fetch_issues(redmine, resource_id=None):
-    if not resource_id is None:
-        return redmine.issue.get(resource_id)
+def fetch_issue(redmine, resource_id=None):
+    if resource_id is None:
+        sys.exit(1)
+    return redmine.issue.get(resource_id)
 
+
+def fetch_issues(redmine):
     return redmine.issue.all()
 
 
-def print_issue(issue):
-    keys = ['id', 'subject', 'description']
-    for k in keys:
-        print("{:<16}{}".format(k, issue[k]))
+def print_issues(issues):
+    def japanese_limit(word, limit):
+        result = ''
+        for c in word:
+            if unicodedata.east_asian_width(c) in ('F', 'W', 'A'):
+                limit -= 2
+            else:
+                limit -= 1
+            result += c
+
+            if limit == 0:
+                return result
+            elif limit == 1:
+                return result + ' '
+
+        return word + ' '*limit
+
+    keys_with_size = [('id', 4), ('project', 24), ('status', 8),
+                      ('priority', 8), ('subject', 32), ('assigned_to', 16)]
+    for key, sz in keys_with_size:
+        print(japanese_limit(key, sz), end=' ')
+    print()
+
+    sorted_issues = sorted(issues, key=lambda x: x['id'])
+
+    for issue in sorted_issues:
+        own_keys = [iss[0] for iss in issue]
+        for key, sz in keys_with_size:
+            if key in own_keys:
+                print(japanese_limit(str(issue[key]), sz), end=' ')
+            else:
+                print(' '*sz, end=' ')
+        print()
 
 
 def main():
@@ -55,12 +88,23 @@ def main():
         print('\n'.join(map(str, projects)))
 
     elif commands[0] == 'issues':
-        if len(commands) >= 2:
-            issue = fetch_issues(redmine, commands[1])
-            print_issue(issue)
+        if len(commands) < 2:
+            # TODO: display help
+            sys.exit(1)
+        if commands[1] == 'list':
+            issue = fetch_issues(redmine)
+            print_issues(issue)
+        elif commands[1] == 'view':
+            pass
+        elif commands[1] == 'create':
+            pass
+        elif commands[1] == 'update':
+            pass
+        elif commands[1] == 'delete':
+            pass
         else:
-            issues = fetch_issues(redmine)
-            print('\n'.join(map(str, issues)))
+            # TODO: display help
+            sys.exit(1)
 
 
 if __name__ == '__main__':
