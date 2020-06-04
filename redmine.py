@@ -17,10 +17,7 @@ def parse_args():
     return args
 
 
-def fetch_projects(redmine, query):
-    if query == 'list':
-        return redmine.project.all()
-
+def fetch_projects(redmine):
     return redmine.project.all()
 
 
@@ -38,9 +35,10 @@ def main():
     redmine = Redmine(SERVER_URL, key=API_ACCESS_KEY)
 
     if commands[0] == 'projects':
-        if len(commands) < 2:
+        if len(commands) < 2 or commands[1] != 'list':
+            # TODO: display help
             sys.exit(1)
-        projects = fetch_projects(redmine, commands[1])
+        projects = fetch_projects(redmine)
         print('\n'.join(map(str, projects)))
 
 
