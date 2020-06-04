@@ -10,9 +10,14 @@ SERVER_URL = 'http://rm.lsnl.jp/'
 API_ACCESS_KEY = os.getenv('REDMINE_API_ACCESS_KEY')
 
 
-def fetch_projects(redmine, query=None):
-    # TODO: separate processing by query
+def parse_args():
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('commands', nargs='+')
+    args = parser.parse_args()
+    return args
 
+
+def fetch_projects(redmine):
     return redmine.project.all()
 
 
@@ -30,10 +35,8 @@ def print_issue(issue):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('commands', nargs='+')
-    args = parser.parse_args()
-    commands = vars(args)['commands']
+    args = parse_args()
+    commands = args.commands
 
     if len(commands) < 1:
         parser.print_help()
@@ -45,10 +48,10 @@ def main():
     redmine = Redmine(SERVER_URL, key=API_ACCESS_KEY)
 
     if commands[0] == 'projects':
-        query = None
-        if len(commands) > 2:
-            query = commands[1]
-        projects = fetch_projects(redmine, query)
+        if len(commands) < 2 or commands[1] != 'list':
+            # TODO: display help
+            sys.exit(1)
+        projects = fetch_projects(redmine)
         print('\n'.join(map(str, projects)))
 
     elif commands[0] == 'issues':
