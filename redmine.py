@@ -33,7 +33,7 @@ def main():
 
     if commands[0] == 'projects':
         query = None
-        if len(commands) > 2:
+        if len(commands) >= 2:
             query = commands[1]
         projects = fetch_projects(redmine, query)
         print('\n'.join(map(str, projects)))
