@@ -29,7 +29,7 @@ def fetch_issue(redmine, resource_id=None):
 
 
 def fetch_issues(redmine):
-    return redmine.issue.all()
+    return redmine.issue.all(sort='id')
 
 
 def print_issue(issue):
@@ -52,17 +52,12 @@ def print_issues(issues):
     def japanese_limit(word, limit):
         result = ''
         for c in word:
+            limit -= 1
             if unicodedata.east_asian_width(c) in ('F', 'W', 'A'):
-                limit -= 2
-            else:
                 limit -= 1
             result += c
-
-            if limit == 0:
-                return result
-            elif limit == 1:
-                return result + ' '
-
+            if limit <= 1:
+                return result + ' '*limit
         return word + ' '*limit
 
     keys_with_size = [('id', 4), ('project', 24), ('status', 8),
@@ -71,15 +66,10 @@ def print_issues(issues):
         print(japanese_limit(key, sz), end=' ')
     print()
 
-    sorted_issues = sorted(issues, key=lambda x: x['id'])
-
-    for issue in sorted_issues:
-        own_keys = [iss[0] for iss in issue]
+    for issue in issues:
         for key, sz in keys_with_size:
-            if key in own_keys:
-                print(japanese_limit(str(issue[key]), sz), end=' ')
-            else:
-                print(' '*sz, end=' ')
+            line_value = getattr(issue, key, '')
+            print(japanese_limit(str(line_value), sz), end=' ')
         print()
 
 
