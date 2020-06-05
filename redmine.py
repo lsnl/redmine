@@ -36,17 +36,12 @@ def print_issues(issues):
     def japanese_limit(word, limit):
         result = ''
         for c in word:
+            limit -= 1
             if unicodedata.east_asian_width(c) in ('F', 'W', 'A'):
-                limit -= 2
-            else:
                 limit -= 1
             result += c
-
-            if limit == 0:
-                return result
-            elif limit == 1:
-                return result + ' '
-
+            if limit <= 1:
+                return result + ' '*limit
         return word + ' '*limit
 
     keys_with_size = [('id', 4), ('project', 24), ('status', 8),
