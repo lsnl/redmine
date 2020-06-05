@@ -29,7 +29,7 @@ def fetch_issue(redmine, resource_id=None):
 
 
 def fetch_issues(redmine):
-    return redmine.issue.all()
+    return redmine.issue.all(sort='id')
 
 
 def print_issues(issues):
@@ -55,9 +55,7 @@ def print_issues(issues):
         print(japanese_limit(key, sz), end=' ')
     print()
 
-    sorted_issues = sorted(issues, key=lambda x: x['id'])
-
-    for issue in sorted_issues:
+    for issue in issues:
         for key, sz in keys_with_size:
             line_value = getattr(issue, key, '')
             print(japanese_limit(str(line_value), sz), end=' ')
