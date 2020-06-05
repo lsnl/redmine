@@ -32,6 +32,22 @@ def fetch_issues(redmine):
     return redmine.issue.all()
 
 
+def print_issue(issue):
+    keys = [('id', '#'), ('subject', 'Subject'), ('status', 'Status'),
+            ('priority', 'Priority'), ('assigned_to', 'Assignee'),
+            ('start_date', 'Start date'), ('due_date', 'Due date'),
+            ('done_ratio', '% Done'), ('estimated_hours', 'Estimated time')]
+
+    for key, name in keys:
+        print('{:16}{}'.format(name, getattr(issue, key, '')))
+    print('Description')
+    print(issue['description'], end='\n\n')
+    print('Subtasks')
+    print_resource_set(issue['children'])
+    print('Related issues')
+    print(getattr(issue, 'relation', ''))
+
+
 def print_issues(issues):
     def japanese_limit(word, limit):
         result = ''
@@ -67,6 +83,12 @@ def print_issues(issues):
         print()
 
 
+def print_resource_set(resource_set):
+    if len(resource_set) > 0:
+        print_issues(resource_set)
+    print()
+
+
 def main():
     args = parse_args()
     commands = args.commands
@@ -95,7 +117,10 @@ def main():
             issue = fetch_issues(redmine)
             print_issues(issue)
         elif commands[1] == 'view':
-            pass
+            if len(commands) < 3:
+                sys.exit(1)
+            issue = fetch_issue(redmine, commands[2])
+            print_issue(issue)
         elif commands[1] == 'create':
             pass
         elif commands[1] == 'update':
