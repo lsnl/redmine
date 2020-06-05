@@ -58,12 +58,9 @@ def print_issues(issues):
     sorted_issues = sorted(issues, key=lambda x: x['id'])
 
     for issue in sorted_issues:
-        own_keys = [iss[0] for iss in issue]
         for key, sz in keys_with_size:
-            if key in own_keys:
-                print(japanese_limit(str(issue[key]), sz), end=' ')
-            else:
-                print(' '*sz, end=' ')
+            line_value = getattr(issue, key, '')
+            print(japanese_limit(str(line_value), sz), end=' ')
         print()
 
 
