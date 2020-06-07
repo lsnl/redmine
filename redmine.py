@@ -14,6 +14,7 @@ API_ACCESS_KEY = os.getenv('REDMINE_API_ACCESS_KEY')
 def parse_args():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('commands', nargs='+')
+    parser.add_argument('-p', help='Project id or identifier')
     args = parser.parse_args()
     return args
 
@@ -25,11 +26,25 @@ def fetch_projects(redmine):
 def fetch_issue(redmine, resource_id=None):
     if resource_id is None:
         sys.exit(1)
-    return redmine.issue.get(resource_id)
+    return redmine.issue.get(resource_id, status_id='*')
 
 
 def fetch_issues(redmine):
     return redmine.issue.all(sort='id')
+
+
+def print_project(redmine, resource_id):
+    print('Ticket Tracking')
+    open_issues = redmine.issue.filter(
+        project_id=resource_id, status_id='open')
+    closed_issues = redmine.issue.filter(
+        project_id=resource_id, status_id='closed')
+    all_issues = redmine.issue.filter(project_id=resource_id, status_id='*')
+    print("open   {:3}".format(len(open_issues)))
+    print("closed {:3}".format(len(closed_issues)))
+    print("total  {:3}".format(len(all_issues)))
+    print('Time Management')
+    print(list(redmine.project.get(resource_id)))
 
 
 def print_issue(issue):
@@ -99,6 +114,11 @@ def main():
         projects = fetch_projects(redmine)
         print('\n'.join(map(str, projects)))
 
+    elif commands[0] == 'show':
+        if args.p is None or args.p == 'root':
+            projects = fetch_projects(redmine)
+        else:
+            print_project(redmine, args.p)
     elif commands[0] == 'issues':
         if len(commands) < 2:
             # TODO: display help
