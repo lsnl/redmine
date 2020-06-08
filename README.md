@@ -4,7 +4,7 @@
 
 ### projects
 
-fetch projects list
+show projects list
 
 ```zsh
 redmine projects list
@@ -20,7 +20,7 @@ workshop
 
 ### show
 
-fetch project abstract
+show project abstract
 
 ```
 redmine show -p seminar
