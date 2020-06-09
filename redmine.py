@@ -35,11 +35,11 @@ def print_issues(issues):
                 limit -= 1
             result += c
             if limit <= 1:
-                return result + ' '*limit
-        return word + ' '*limit
+                return result + ' ' * limit
+        return word + ' ' * limit
 
     keys_with_size = [('id', 4), ('project', 24), ('status', 8),
-                      ('priority', 8), ('subject', 32), ('assigned_to', 16)]
+                      ('priority', 10), ('subject', 32), ('assigned_to', 16)]
     for key, sz in keys_with_size:
         print(japanese_limit(key, sz), end=' ')
     print()
