@@ -27,7 +27,7 @@ export REDMINE_API_ACCESS_KEY="XXX"
 
 ### projects
 
-fetch projects list
+show projects list
 
 ```zsh
 redmine projects list
@@ -43,7 +43,7 @@ workshop
 
 ### show
 
-fetch project abstract
+show project abstract
 
 ```
 redmine show -p seminar

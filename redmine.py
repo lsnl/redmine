@@ -72,6 +72,7 @@ def print_issues(issues):
                 limit -= 1
             result += c
             if limit <= 1:
+
                 return result + ' '*limit
         return word + ' '*limit
 
@@ -119,6 +120,7 @@ def main():
             projects = fetch_projects(redmine)
         else:
             print_project(redmine, args.p)
+
     elif commands[0] == 'issues':
         if len(commands) < 2:
             # TODO: display help
