@@ -15,7 +15,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('commands', nargs='+')
     args = parser.parse_args()
-    return args
+    return parser, args
 
 
 def fetch_projects(redmine):
@@ -80,7 +80,7 @@ def print_resource_set(resource_set):
 
 
 def main():
-    args = parse_args()
+    parser, args = parse_args()
     commands = args.commands
 
     if len(commands) < 1:
