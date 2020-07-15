@@ -7,7 +7,7 @@ import unicodedata
 
 from redminelib import Redmine
 
-SERVER_URL = 'http://rm.lsnl.jp/'
+SERVER_URL = os.getenv('REDMINE_SERVER_URL')
 API_ACCESS_KEY = os.getenv('REDMINE_API_ACCESS_KEY')
 
 
