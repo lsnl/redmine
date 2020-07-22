@@ -15,11 +15,12 @@ install requre modules
 pip install -r requirements.txt
 ```
 
-set REDMINE_API_ACCESS_KEY to your environment variable
+set `REDMINE_SERVER_URL` and `REDMINE_API_ACCESS_KEY` to your environment variable
 
 > You can see your API access key in http://rm.lsnl.jp/my/account
 
 ```zsh
+export REDMINE_SERVER_URL="https://rm.lsnl.jp/"
 export REDMINE_API_ACCESS_KEY="XXX"
 ```
 
