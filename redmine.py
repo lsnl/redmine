@@ -6,16 +6,16 @@ import argparse
 import unicodedata
 
 from redminelib import Redmine
-from lib import Projects, Issues, Handler
+from lib import Handler
 
 
 def main():
     handler = Handler()
 
-    if hasattr(args, 'handler'):
-        args.handler(args)
+    if hasattr(handler.args, 'handler'):
+        handler.args.handler(handler.args)
     else:
-        parser.print_help()
+        handler.parser.print_help()
 
 
 if __name__ == '__main__':
