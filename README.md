@@ -63,7 +63,7 @@ redmine issues [list, view, create, update, delete]
 ##### filter with project name
 
 ```zsh
-redmine issues list [-p] $project_name ([-s] $status)
+redmine issues list -p $project_name (-s $status)
 ```
 
 result example
@@ -77,7 +77,7 @@ id Project       Status Priority        Subject          Assignee   due_date
 ##### filter with assignee name
 
 ```zsh
-redmine issues list [-a] $assignee_name ([-s] $status)
+redmine issues list -a $assignee_name (-s $status)
 ```
 
 result example
