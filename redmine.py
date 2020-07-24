@@ -26,6 +26,14 @@ def fetch_issues(redmine):
     return redmine.issue.all(sort='id')
 
 
+def delete_issue(redmine, resource_id=None):
+    if resource_id is None:
+        sys.exit(1)
+    issue = redmine.issue.get(resource_id)
+    issue.delete()
+    print('delete #{r_id}: {subject}'.format(r_id=resource_id, subject=issue.subject))
+
+    
 def print_issues(issues):
     def japanese_limit(word, limit):
         result = ''
@@ -78,6 +86,10 @@ def main():
         if commands[1] == 'list':
             issue = fetch_issues(redmine)
             print_issues(issue)
+        elif commands[1] == 'delete':
+            if len(commands) < 3:
+                sys.exit(1)
+            delete_issue(redmine, commands[2])
         else:
             # TODO: display help
             sys.exit(1)

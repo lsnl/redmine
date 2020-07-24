@@ -17,7 +17,7 @@ pip install -r requirements.txt
 
 set `REDMINE_SERVER_URL` and `REDMINE_API_ACCESS_KEY` to your environment variable
 
-> You can see your API access key in http://rm.lsnl.jp/my/account
+> You can see your API access key in https://rm.lsnl.jp/my/account
 
 ```zsh
 export REDMINE_SERVER_URL="https://rm.lsnl.jp/"
@@ -37,34 +37,18 @@ redmine projects list
 result example
 
 ```
-seminar
-math-bof
-workshop
+勉強会:UNIXを楽しむ会
+勉強会:ブートキャンプ
+勉強会:数学を楽しむ会
+勉強会:自主勉強会
+勉強会:輪講
 ```
 
 ### show
 
-show project abstract
-
-```
+```zsh
 redmine show -p seminar
 ```
-
-result example
-
-```
-Ticket Tracking
-TBD    1
-Done   0
-Sum    1
-Time Management:
-Expected Man-hours    0:00
-Working Hours         0:00
-Member:
-Alice, Bob, Carol, Dan
-```
-
-`redmine show` is equivalent `redmine show -p root`
 
 ### issues
 
@@ -74,20 +58,34 @@ issues
 redmine issues [list, view, create, update, delete]
 ```
 
-You can see help by `redmine issues`.
-
 #### list
 
+##### filter with project name
+
 ```zsh
-redmine issues list [-o] $header
+redmine issues list [-p] $project_name ([-s] $status)
 ```
 
 result example
 
 ```
-# Project         Status Priority Subject                  Assignee
-1 研究:テーマ考案 ToDo   通常     2020-06-05 12:40-13:30   Alice
-2 研究:テーマ考案 ToDo   通常     2020-06-07 12:40-13:30   Alice
+id Project       Status Priority        Subject          Assignee   due_date
+1 研究:テーマ考案 ToDo   通常     2020-06-05 12:40-13:30   Alice     2020-07-09
+2 研究:テーマ考案 ToDo   通常     2020-06-07 12:40-13:30   Bob       2020-07-16
+```
+
+##### filter with assignee name
+
+```zsh
+redmine issues list [-a] $assignee_name ([-s] $status)
+```
+
+result example
+
+```
+id Project             Status Priority        Subject          Assignee   due_date
+1 勉強会:UNIXを楽しむ会   ToDo   通常     2020-06-05 12:40-13:30   Alice     2020-06-05
+2 勉強会:数学を楽しむ会    ToDo   通常     2020-06-09 12:40-13:30   Alice     2020-06-09
 ```
 
 #### view
@@ -133,9 +131,14 @@ redmine issues update
 #### delete
 
 ```zsh
-redmine issues delete
+redmine issues delete $resource_id
 ```
 
+result example
+
+```
+delete #833: 文献調査
+```
 ### ticket
 
 ```zsh
