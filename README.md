@@ -137,7 +137,7 @@ redmine issues delete $resource_id
 result example
 
 ```
-delete #833: 文献調査
+delete #id: subject_name
 ```
 ### ticket
 
