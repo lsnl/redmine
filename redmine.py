@@ -6,7 +6,7 @@ import argparse
 import unicodedata
 
 from redminelib import Redmine
-from lib import Handler
+from redmine import Handler
 
 
 def main():
